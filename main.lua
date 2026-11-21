@@ -118,7 +118,7 @@ function ComicMeta:processFile(comic_file)
         "Translator"
     }
     
-    -- Loop adds author and position to authors_table and author to authors_names if not already in the tables; if already in authors_table, add position to value
+    -- Loop adds author and position to authors_table and author to author_names if not already in the tables; if already in authors_table, add position to value
     for title_num = 1, #author_titles do
         local title = author_titles[title_num]
         local value = author_metadata[title]
