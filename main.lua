@@ -139,13 +139,12 @@ function ComicMeta:processFile(comic_file)
     
     local all_authors = ""
     
-    -- Concatenate and format all authors with positions
+    -- Concatenate and format all authors with positions together into one string
     for i = 1, #author_names do
-        if i >= #author_names then
-            all_authors = all_authors .. author_names[i] .. " (" .. authors_table[author_names[i]] .. ")"
-        else
-            all_authors = all_authors .. author_names[i] .. " (" .. authors_table[author_names[i]] .. ")\n"
+        if #all_authors > 0 then
+            all_authors = all_authors .. "\n"
         end
+        all_authors = all_authors .. author_names[i] .. " (" .. authors_table[author_names[i]] .. ")"
     end
 
     logger.dbg("ComicMeta -> processFile all_authors", all_authors)
