@@ -117,12 +117,12 @@ function ComicMeta:processFile(comic_file)
         "Editor",
         "Translator"
     }
-    
+
     -- Loop adds author and position to authors_table and author to author_names if not already in the tables; if already in authors_table, add position to value
     for title_num = 1, #author_titles do
         local title = author_titles[title_num]
         local value = author_metadata[title]
-        if value ~= nil or value ~= '' then
+        if value ~= nil then
             local authors = util.splitToArray(value, ",", false)
             for i = 1, #authors do
                 local author = util.trim(authors[i])
@@ -148,10 +148,10 @@ function ComicMeta:processFile(comic_file)
     logger.dbg("ComicMeta -> processFile authors_table", authors_table)
     logger.dbg("ComicMeta -> processFile author_names", author_names)
 
-    table.sort(author_names) -- Sort authorNames alphabetically
-    
+    table.sort(author_names) -- Sort author_names alphabetically
+
     local all_authors = ""
-    
+
     -- Concatenate and format all authors with positions together into one string
     for i = 1, #author_names do
         if #all_authors > 0 then
