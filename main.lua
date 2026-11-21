@@ -106,26 +106,39 @@ function ComicMeta:processFile(comic_file)
     local authors_table = {}
     -- Table to hold author's names to sort alphabetically
     local author_names = {}
+    -- List to hold intended author Titles order
+    local author_titles = {
+        "Writer",
+        "Penciller",
+        "Inker",
+        "Colorist",
+        "Letterer",
+        "CoverArtist",
+        "Editor",
+        "Translator"
+    }
     
     -- Loop adds author and position to authors_table and author to authors_names if not already in the tables; if already in authors_table, add position to value
-    for key, value in pairs(author_metadata) do
+    for title_num = 1, #author_titles do
+        local title = author_titles[title_num]
+        local value = author_metadata[title]
         if value ~= nil or value ~= '' then
             local authors = util.splitToArray(value, ",", false)
             for i = 1, #authors do
                 local author = util.trim(authors[i])
                 if authors_table[author] == nil then
-                    if key == "CoverArtist" then
+                    if title == "CoverArtist" then
                         authors_table[author] = "Cover Artist" -- Added space for aesthetic reasons
                         table.insert(author_names, author)
                     else
-                        authors_table[author] = key
+                        authors_table[author] = title
                         table.insert(author_names, author)
                     end
                 else
-                    if key == "CoverArtist" then
+                    if title == "CoverArtist" then
                         authors_table[author] = authors_table[author] .. ", " .. "Cover Artist"
                     else
-                        authors_table[author] = authors_table[author] .. ", " .. key
+                        authors_table[author] = authors_table[author] .. ", " .. title
                     end
                 end
             end
