@@ -74,7 +74,7 @@ function ComicMeta:processFile(comic_file)
     logger.dbg("ComicMeta -> processFile comicInfo.metadata", comicInfo.metadata)
 
     -- Parse the XML for all authors
-    local authorMetadata = {
+    local author_metadata = {
         ["Writer"] = comicInfo.metadata.Writer,
         ["Penciller"] = comicInfo.metadata.Penciller,
         ["Inker"] = comicInfo.metadata.Inker,
@@ -85,7 +85,7 @@ function ComicMeta:processFile(comic_file)
         ["Translator"] = comicInfo.metadata.Translator
     }
 
-    logger.dbg("ComicMeta -> processFile authorMetadata", authorMetadata)
+    logger.dbg("ComicMeta -> processFile author_metadata", author_metadata)
 
     -- Parse the XML content and create a metadata table
     local metadata = {
@@ -103,55 +103,54 @@ function ComicMeta:processFile(comic_file)
     -- Fixup metadata
 
     -- Table to hold authors and their positions
-    local authorsTable = {}
+    local authors_table = {}
     -- Table to hold author's names to sort alphabetically
-    local authorsNames = {}
+    local author_names = {}
     
-    -- Loop adds author and position to authorsTable and author to authorsNames if not already in the tables; if already in authorsTable, add position to value
-    for key, value in pairs(authorMetadata) do
+    -- Loop adds author and position to authors_table and author to authors_names if not already in the tables; if already in authors_table, add position to value
+    for key, value in pairs(author_metadata) do
         if value ~= nil or value ~= '' then
             local authors = util.splitToArray(value, ",", false)
             for i = 1, #authors do
                 local author = util.trim(authors[i])
-                if authorsTable[author] == nil then
+                if authors_table[author] == nil then
                     if key == "CoverArtist" then
-                        authorsTable[author] = "Cover Artist" -- Added space for aesthetic reasons
-                        table.insert(authorsNames, author)
+                        authors_table[author] = "Cover Artist" -- Added space for aesthetic reasons
+                        table.insert(author_names, author)
                     else
-                        authorsTable[author] = key
-                        table.insert(authorsNames, author)
+                        authors_table[author] = key
+                        table.insert(author_names, author)
                     end
                 else
                     if key == "CoverArtist" then
-                        authorsTable[author] = authorsTable[author] .. ", " .. "Cover Artist"
+                        authors_table[author] = authors_table[author] .. ", " .. "Cover Artist"
                     else
-                        authorsTable[author] = authorsTable[author] .. ", " .. key
+                        authors_table[author] = authors_table[author] .. ", " .. key
                     end
                 end
             end
         end
     end
 
-    logger.dbg("ComicMeta -> processFile authorsTable", authorsTable)
-    logger.dbg("ComicMeta -> processFile authorsNames", authorsNames)
+    logger.dbg("ComicMeta -> processFile authors_table", authors_table)
+    logger.dbg("ComicMeta -> processFile author_names", author_names)
 
-    table.sort(authorsNames) -- Sort authorNames alphabetically
+    table.sort(author_names) -- Sort authorNames alphabetically
     
-    local allAuthors = ""
+    local all_authors = ""
     
     -- Concatenate and format all authors with positions
-    for i = 1, #authorsNames do
-        if i >= #authorsNames then
-            allAuthors = allAuthors .. authorsNames[i] .. " (" .. authorsTable[authorsNames[i]] .. ")"
+    for i = 1, #author_names do
+        if i >= #author_names then
+            all_authors = all_authors .. author_names[i] .. " (" .. authors_table[author_names[i]] .. ")"
         else
-            allAuthors = allAuthors .. authorsNames[i] .. " (" .. authorsTable[authorsNames[i]] .. ")\n"
+            all_authors = all_authors .. author_names[i] .. " (" .. authors_table[author_names[i]] .. ")\n"
         end
     end
 
-    logger.dbg("ComicMeta -> processFile allAuthors", allAuthors)
-    logger.dbg("ComicMeta -> processFile metadata.authors", metadata.authors)
+    logger.dbg("ComicMeta -> processFile all_authors", all_authors)
 
-    metadata["authors"] = allAuthors
+    metadata["authors"] = all_authors
 
     for key, value in pairs(metadata) do
         if key == "keywords" then
