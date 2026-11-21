@@ -4,6 +4,7 @@ on:
     types: [published]
 jobs:
   publish:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -13,7 +14,7 @@ jobs:
         run: |
           mkdir -p comicmeta.koplugin
           cp -r lib comicmeta.koplugin/lib
-          cp LICENSE.md README.md main.lua _meta.lua comicmeta.koplugin/
+          cp LICENSE README.md main.lua _meta.lua comicmeta.koplugin/
           zip -r comicmeta.koplugin.zip comicmeta.koplugin
       - name: Upload Release Artifact
         env:
