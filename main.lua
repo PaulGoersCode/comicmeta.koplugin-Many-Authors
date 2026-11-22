@@ -157,7 +157,7 @@ function ComicMeta:processFile(comic_file)
         if #all_authors > 0 then
             all_authors = all_authors .. "\n"
         end
-        all_authors = all_authors .. author_names[i] .. " (" .. authors_table[author_names[i]] .. ")"
+        all_authors = all_authors .. author_names[i] .. " [" .. authors_table[author_names[i]] .. "]"
     end
 
     logger.dbg("ComicMeta -> processFile all_authors", all_authors)
