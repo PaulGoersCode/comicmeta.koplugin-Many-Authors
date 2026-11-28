@@ -82,7 +82,7 @@ function ComicMeta:processFile(comic_file)
         ["Letterer"] = comicInfo.metadata.Letterer,
         ["CoverArtist"] = comicInfo.metadata.CoverArtist,
         ["Editor"] = comicInfo.metadata.Editor,
-        ["Translator"] = comicInfo.metadata.Translator
+        ["Translator"] = comicInfo.metadata.Translator,
     }
 
     logger.dbg("ComicMeta -> processFile author_metadata", author_metadata)
@@ -115,7 +115,7 @@ function ComicMeta:processFile(comic_file)
         "Letterer",
         "CoverArtist",
         "Editor",
-        "Translator"
+        "Translator",
     }
 
     -- Loop adds author and position to authors_table and author to author_names if not already in the tables; if already in authors_table, add position to value
